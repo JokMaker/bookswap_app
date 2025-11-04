@@ -33,7 +33,7 @@ class AuthProvider with ChangeNotifier {
     } catch (e) {
       _isLoading = false;
       notifyListeners();
-      throw e;
+      rethrow;
     }
 
     _isLoading = false;
@@ -50,7 +50,7 @@ class AuthProvider with ChangeNotifier {
     } catch (e) {
       _isLoading = false;
       notifyListeners();
-      throw e;
+      rethrow;
     }
 
     _isLoading = false;
@@ -68,7 +68,7 @@ class AuthProvider with ChangeNotifier {
     } catch (e) {
       _isLoading = false;
       notifyListeners();
-      throw e;
+      rethrow;
     }
 
     _isLoading = false;
@@ -79,7 +79,7 @@ class AuthProvider with ChangeNotifier {
     try {
       await _authService.sendEmailVerification();
     } catch (e) {
-      throw e;
+      rethrow;
     }
   }
 }

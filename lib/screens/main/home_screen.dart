@@ -4,7 +4,7 @@ import '../../providers/auth_provider.dart';
 import '../../providers/book_provider.dart';
 import '../../providers/swap_provider.dart';
 import '../../providers/chat_provider.dart';
-import '../../utils/constants.dart';
+
 import 'browse_screen.dart';
 import 'my_listings_screen.dart';
 import 'chats_screen.dart';

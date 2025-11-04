@@ -9,7 +9,7 @@ import 'providers/chat_provider.dart';
 import 'screens/auth/signin_screen.dart';
 import 'screens/auth/signup_screen.dart';
 import 'screens/main/home_screen.dart';
-import 'utils/constants.dart';
+
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -20,6 +20,8 @@ void main() async {
 }
 
 class BookSwapApp extends StatelessWidget {
+  const BookSwapApp({Key? key}) : super(key: key);
+  
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
@@ -48,6 +50,8 @@ class BookSwapApp extends StatelessWidget {
 }
 
 class AuthWrapper extends StatelessWidget {
+  const AuthWrapper({Key? key}) : super(key: key);
+  
   @override
   Widget build(BuildContext context) {
     return Consumer<AuthProvider>(
@@ -63,6 +67,8 @@ class AuthWrapper extends StatelessWidget {
 }
 
 class SplashScreen extends StatelessWidget {
+  const SplashScreen({Key? key}) : super(key: key);
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(

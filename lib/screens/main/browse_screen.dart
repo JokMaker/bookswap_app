@@ -8,6 +8,8 @@ import '../../models/book_model.dart';
 import '../../utils/constants.dart';
 
 class BrowseScreen extends StatelessWidget {
+  const BrowseScreen({Key? key}) : super(key: key);
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
