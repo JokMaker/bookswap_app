@@ -50,31 +50,32 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       body: _screens[_currentIndex],
       bottomNavigationBar: BottomNavigationBar(
-        type: BottomNavigationBarType.fixed,
         currentIndex: _currentIndex,
         onTap: (index) {
           setState(() {
             _currentIndex = index;
           });
         },
-        selectedItemColor: AppConstants.primaryColor,
+        type: BottomNavigationBarType.fixed,
+        backgroundColor: const Color(0xFF1A1A2E),
+        selectedItemColor: const Color(0xFFFFC107),
         unselectedItemColor: Colors.grey,
-        items: [
+        items: const [
           BottomNavigationBarItem(
-            icon: Icon(Icons.book),
-            label: AppStrings.browseListings,
+            icon: Icon(Icons.home),
+            label: 'Home',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.library_books),
-            label: AppStrings.myListings,
+            icon: Icon(Icons.list_alt),
+            label: 'My Listings',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.chat),
-            label: AppStrings.chats,
+            icon: Icon(Icons.chat_bubble_outline),
+            label: 'Chats',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.settings),
-            label: AppStrings.settings,
+            label: 'Settings',
           ),
         ],
       ),

@@ -41,28 +41,29 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'your-web-api-key',
-    appId: 'your-web-app-id',
-    messagingSenderId: 'your-sender-id',
-    projectId: 'your-project-id',
-    authDomain: 'your-project-id.firebaseapp.com',
-    storageBucket: 'your-project-id.appspot.com',
+    apiKey: 'AIzaSyDOPbIm9hgT7ZF_kO5bJ6WzAs1Cti597EI',
+    appId: '1:722753961909:web:b528ce8458fd8ce38f23fc',
+    messagingSenderId: '722753961909',
+    projectId: 'bookswap-45220',
+    authDomain: 'bookswap-45220.firebaseapp.com',
+    storageBucket: 'bookswap-45220.firebasestorage.app',
+    measurementId: 'G-RNRCZ748LD',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'your-android-api-key',
-    appId: 'your-android-app-id',
-    messagingSenderId: 'your-sender-id',
-    projectId: 'your-project-id',
-    storageBucket: 'your-project-id.appspot.com',
+    apiKey: 'AIzaSyAV3w7DCbYew_CHS0rIE4uoxLgLbzd2NQY',
+    appId: '1:722753961909:android:5fdb188adbae60468f23fc',
+    messagingSenderId: '722753961909',
+    projectId: 'bookswap-45220',
+    storageBucket: 'bookswap-45220.firebasestorage.app',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'your-ios-api-key',
-    appId: 'your-ios-app-id',
-    messagingSenderId: 'your-sender-id',
-    projectId: 'your-project-id',
-    storageBucket: 'your-project-id.appspot.com',
+    apiKey: 'AIzaSyBWTMVnjZhaHDsx75unwDe39iun5DOHTfw',
+    appId: '1:722753961909:ios:9db58db27362a0948f23fc',
+    messagingSenderId: '722753961909',
+    projectId: 'bookswap-45220',
+    storageBucket: 'bookswap-45220.firebasestorage.app',
     iosBundleId: 'com.example.bookswapApp',
   );
 

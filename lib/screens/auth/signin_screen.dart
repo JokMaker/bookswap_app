@@ -2,17 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../providers/auth_provider.dart';
 
-class SignUpScreen extends StatefulWidget {
+class SignInScreen extends StatefulWidget {
   @override
-  _SignUpScreenState createState() => _SignUpScreenState();
+  _SignInScreenState createState() => _SignInScreenState();
 }
 
-class _SignUpScreenState extends State<SignUpScreen> {
+class _SignInScreenState extends State<SignInScreen> {
   final _formKey = GlobalKey<FormState>();
-  final _usernameController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
-  final _confirmPasswordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +39,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 ),
                 const SizedBox(height: 24),
                 const Text(
-                  'Create Account',
+                  'Welcome Back',
                   style: TextStyle(
                     fontSize: 32,
                     fontWeight: FontWeight.bold,
@@ -50,26 +48,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 ),
                 const SizedBox(height: 8),
                 const Text(
-                  'Join BookSwap community',
+                  'Sign in to continue',
                   style: TextStyle(
                     fontSize: 16,
                     color: Colors.white60,
                   ),
                 ),
                 const SizedBox(height: 40),
-                
-                _buildTextField(
-                  controller: _usernameController,
-                  label: 'Username',
-                  icon: Icons.person,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter your username';
-                    }
-                    return null;
-                  },
-                ),
-                const SizedBox(height: 16),
                 
                 _buildTextField(
                   controller: _emailController,
@@ -103,23 +88,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     return null;
                   },
                 ),
-                const SizedBox(height: 16),
-                
-                _buildTextField(
-                  controller: _confirmPasswordController,
-                  label: 'Confirm Password',
-                  icon: Icons.lock_outline,
-                  obscureText: true,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please confirm your password';
-                    }
-                    if (value != _passwordController.text) {
-                      return 'Passwords do not match';
-                    }
-                    return null;
-                  },
-                ),
                 
                 const SizedBox(height: 32),
                 Consumer<AuthProvider>(
@@ -128,7 +96,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       width: double.infinity,
                       height: 56,
                       child: ElevatedButton(
-                        onPressed: authProvider.isLoading ? null : _handleSignUp,
+                        onPressed: authProvider.isLoading ? null : _handleSignIn,
                         style: ElevatedButton.styleFrom(
                           backgroundColor: const Color(0xFFFFC107),
                           shape: RoundedRectangleBorder(
@@ -138,7 +106,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         child: authProvider.isLoading
                             ? const CircularProgressIndicator(color: Color(0xFF1A1A2E))
                             : const Text(
-                                'Sign Up',
+                                'Sign In',
                                 style: TextStyle(
                                   fontSize: 18,
                                   fontWeight: FontWeight.bold,
@@ -190,24 +158,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
     );
   }
 
-  void _handleSignUp() async {
+  void _handleSignIn() async {
     if (_formKey.currentState!.validate()) {
       try {
         final authProvider = Provider.of<AuthProvider>(context, listen: false);
-        await authProvider.signUp(
+        await authProvider.signIn(
           _emailController.text,
           _passwordController.text,
-          _usernameController.text,
         );
-        
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Verification email sent! Please check your email.'),
-            backgroundColor: Color(0xFFFFC107),
-          ),
-        );
-        
-        Navigator.pop(context);
       } catch (e) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -221,10 +179,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   @override
   void dispose() {
-    _usernameController.dispose();
     _emailController.dispose();
     _passwordController.dispose();
-    _confirmPasswordController.dispose();
     super.dispose();
   }
 }
