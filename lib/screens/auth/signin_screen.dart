@@ -3,13 +3,13 @@ import 'package:provider/provider.dart';
 import '../../providers/auth_provider.dart';
 
 class SignInScreen extends StatefulWidget {
-  const SignInScreen({Key? key}) : super(key: key);
+  const SignInScreen({super.key});
   
   @override
-  _SignInScreenState createState() => _SignInScreenState();
+  SignInScreenState createState() => SignInScreenState();
 }
 
-class _SignInScreenState extends State<SignInScreen> {
+class SignInScreenState extends State<SignInScreen> {
   final _formKey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
@@ -119,6 +119,59 @@ class _SignInScreenState extends State<SignInScreen> {
                     );
                   },
                 ),
+                
+                const SizedBox(height: 24),
+                const Row(
+                  children: [
+                    Expanded(child: Divider(color: Colors.white30)),
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 16),
+                      child: Text(
+                        'OR',
+                        style: TextStyle(color: Colors.white60),
+                      ),
+                    ),
+                    Expanded(child: Divider(color: Colors.white30)),
+                  ],
+                ),
+                const SizedBox(height: 24),
+                
+                // Google Sign In Button
+                Consumer<AuthProvider>(
+                  builder: (context, authProvider, child) {
+                    return SizedBox(
+                      width: double.infinity,
+                      height: 56,
+                      child: OutlinedButton.icon(
+                        onPressed: authProvider.isLoading ? null : _handleGoogleSignIn,
+                        style: OutlinedButton.styleFrom(
+                          side: const BorderSide(color: Colors.white30),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          backgroundColor: Colors.white.withValues(alpha: 0.05),
+                        ),
+                        icon: authProvider.isLoading 
+                            ? const SizedBox(
+                                width: 20,
+                                height: 20,
+                                child: CircularProgressIndicator(
+                                  strokeWidth: 2,
+                                  valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                                ),
+                              )
+                            : const Icon(Icons.g_mobiledata, color: Colors.white, size: 28),
+                        label: Text(
+                          authProvider.isLoading ? 'Signing in...' : 'Continue with Google',
+                          style: const TextStyle(
+                            fontSize: 16,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                    );
+                  },
+                ),
               ],
             ),
           ),
@@ -146,7 +199,7 @@ class _SignInScreenState extends State<SignInScreen> {
         labelStyle: const TextStyle(color: Colors.white60),
         prefixIcon: Icon(icon, color: const Color(0xFFFFC107)),
         filled: true,
-        fillColor: Colors.white.withOpacity(0.1),
+        fillColor: Colors.white.withValues(alpha: 0.1),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
           borderSide: BorderSide.none,
@@ -169,10 +222,40 @@ class _SignInScreenState extends State<SignInScreen> {
           _passwordController.text,
         );
       } catch (e) {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(e.toString()),
+              backgroundColor: Colors.redAccent,
+            ),
+          );
+        }
+      }
+    }
+  }
+
+  void _handleGoogleSignIn() async {
+    try {
+      final authProvider = Provider.of<AuthProvider>(context, listen: false);
+      await authProvider.signInWithGoogle();
+    } catch (e) {
+      if (mounted) {
+        String errorMessage = 'Google sign-in failed';
+        if (e.toString().contains('cancelled')) {
+          errorMessage = 'Sign-in was cancelled';
+        } else if (e.toString().contains('network')) {
+          errorMessage = 'Network error. Please check your connection';
+        }
+        
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(e.toString()),
+            content: Text(errorMessage),
             backgroundColor: Colors.redAccent,
+            action: SnackBarAction(
+              label: 'Retry',
+              textColor: Colors.white,
+              onPressed: _handleGoogleSignIn,
+            ),
           ),
         );
       }

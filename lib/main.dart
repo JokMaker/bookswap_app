@@ -20,7 +20,7 @@ void main() async {
 }
 
 class BookSwapApp extends StatelessWidget {
-  const BookSwapApp({Key? key}) : super(key: key);
+  const BookSwapApp({super.key});
   
   @override
   Widget build(BuildContext context) {
@@ -50,7 +50,7 @@ class BookSwapApp extends StatelessWidget {
 }
 
 class AuthWrapper extends StatelessWidget {
-  const AuthWrapper({Key? key}) : super(key: key);
+  const AuthWrapper({super.key});
   
   @override
   Widget build(BuildContext context) {
@@ -67,7 +67,7 @@ class AuthWrapper extends StatelessWidget {
 }
 
 class SplashScreen extends StatelessWidget {
-  const SplashScreen({Key? key}) : super(key: key);
+  const SplashScreen({super.key});
   
   @override
   Widget build(BuildContext context) {

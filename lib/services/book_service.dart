@@ -48,7 +48,7 @@ class BookService {
 
       return docRef.id;
     } catch (e) {
-      throw e;
+      rethrow;
     }
   }
 
@@ -68,7 +68,7 @@ class BookService {
         'imageUrl': imageUrl,
       });
     } catch (e) {
-      throw e;
+      rethrow;
     }
   }
 
@@ -87,7 +87,7 @@ class BookService {
       
       await _firestore.collection('books').doc(bookId).delete();
     } catch (e) {
-      throw e;
+      rethrow;
     }
   }
 
@@ -98,7 +98,7 @@ class BookService {
         return BookModel.fromMap(doc.data() as Map<String, dynamic>, doc.id);
       }
     } catch (e) {
-      throw e;
+      rethrow;
     }
     return null;
   }

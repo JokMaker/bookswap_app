@@ -19,7 +19,7 @@ class ChatService {
       DocumentReference docRef = await _firestore.collection('chats').add(chatRoom.toMap());
       return docRef.id;
     } catch (e) {
-      throw e;
+      rethrow;
     }
   }
 
@@ -66,7 +66,7 @@ class ChatService {
         'lastMessageAt': DateTime.now().millisecondsSinceEpoch,
       });
     } catch (e) {
-      throw e;
+      rethrow;
     }
   }
 
@@ -81,7 +81,7 @@ class ChatService {
         return query.docs.first.id;
       }
     } catch (e) {
-      throw e;
+      rethrow;
     }
     return null;
   }

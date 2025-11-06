@@ -45,7 +45,7 @@ class ChatProvider with ChangeNotifier {
     } catch (e) {
       _isLoading = false;
       notifyListeners();
-      throw e;
+      rethrow;
     }
   }
 
@@ -53,7 +53,7 @@ class ChatProvider with ChangeNotifier {
     try {
       await _chatService.sendMessage(chatRoomId, senderId, senderEmail, message);
     } catch (e) {
-      throw e;
+      rethrow;
     }
   }
 

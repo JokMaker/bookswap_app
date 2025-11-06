@@ -54,7 +54,7 @@ class SwapProvider with ChangeNotifier {
     } catch (e) {
       _isLoading = false;
       notifyListeners();
-      throw e;
+      rethrow;
     }
 
     _isLoading = false;
@@ -70,7 +70,7 @@ class SwapProvider with ChangeNotifier {
     } catch (e) {
       _isLoading = false;
       notifyListeners();
-      throw e;
+      rethrow;
     }
 
     _isLoading = false;

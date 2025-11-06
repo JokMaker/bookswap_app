@@ -13,7 +13,7 @@ class BookCard extends StatelessWidget {
   final bool showEditButtons;
 
   const BookCard({
-    Key? key,
+    super.key,
     required this.book,
     this.onTap,
     this.onSwapTap,
@@ -21,7 +21,7 @@ class BookCard extends StatelessWidget {
     this.onDeleteTap,
     this.showSwapButton = false,
     this.showEditButtons = false,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -113,29 +113,29 @@ class BookCard extends StatelessWidget {
                           if (showSwapButton)
                             ElevatedButton(
                               onPressed: onSwapTap,
-                              child: Text('Swap'),
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: AppConstants.primaryColor,
                                 foregroundColor: Colors.white,
                               ),
+                              child: Text('Swap'),
                             ),
                           if (showEditButtons) ...[
                             ElevatedButton(
                               onPressed: onEditTap,
-                              child: Text('Edit'),
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: Colors.orange,
                                 foregroundColor: Colors.white,
                               ),
+                              child: Text('Edit'),
                             ),
                             SizedBox(width: 8),
                             ElevatedButton(
                               onPressed: onDeleteTap,
-                              child: Text('Delete'),
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: Colors.red,
                                 foregroundColor: Colors.white,
                               ),
+                              child: Text('Delete'),
                             ),
                           ],
                         ],

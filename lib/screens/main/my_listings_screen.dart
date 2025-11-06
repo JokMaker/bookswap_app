@@ -7,6 +7,8 @@ import '../../widgets/common/book_card.dart';
 import 'add_book_screen.dart';
 
 class MyListingsScreen extends StatelessWidget {
+  const MyListingsScreen({super.key});
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -99,13 +101,17 @@ class MyListingsScreen extends StatelessWidget {
                 await Provider.of<BookProvider>(context, listen: false)
                     .deleteBook(book.id);
                 
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text('Book deleted successfully')),
-                );
+                if (context.mounted) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text('Book deleted successfully')),
+                  );
+                }
               } catch (e) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text('Error deleting book: ${e.toString()}')),
-                );
+                if (context.mounted) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text('Error deleting book: ${e.toString()}')),
+                  );
+                }
               }
             },
             style: ElevatedButton.styleFrom(backgroundColor: Colors.red),

@@ -6,11 +6,13 @@ import '../../models/swap_model.dart';
 import '../../utils/constants.dart';
 
 class SettingsScreen extends StatefulWidget {
+  const SettingsScreen({super.key});
+  
   @override
-  _SettingsScreenState createState() => _SettingsScreenState();
+  SettingsScreenState createState() => SettingsScreenState();
 }
 
-class _SettingsScreenState extends State<SettingsScreen> {
+class SettingsScreenState extends State<SettingsScreen> {
   bool _notificationsEnabled = true;
   bool _emailNotifications = true;
 
@@ -199,7 +201,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
         Container(
           padding: EdgeInsets.all(12),
           decoration: BoxDecoration(
-            color: color.withOpacity(0.1),
+            color: color.withValues(alpha: 0.1),
             borderRadius: BorderRadius.circular(12),
           ),
           child: Icon(icon, color: color, size: 24),
@@ -245,7 +247,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   _notificationsEnabled = value;
                 });
               },
-              activeColor: AppConstants.primaryColor,
+              activeThumbColor: AppConstants.primaryColor,
             ),
             SwitchListTile(
               title: Text('Email Notifications'),
@@ -256,7 +258,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   _emailNotifications = value;
                 });
               },
-              activeColor: AppConstants.primaryColor,
+              activeThumbColor: AppConstants.primaryColor,
             ),
           ],
         ),
@@ -280,14 +282,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
               builder: (context, authProvider, child) {
                 return ElevatedButton(
                   onPressed: authProvider.isLoading ? null : _signOut,
-                  child: authProvider.isLoading
-                      ? CircularProgressIndicator()
-                      : Text(AppStrings.signOut),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.red,
                     foregroundColor: Colors.white,
                     minimumSize: Size(double.infinity, 48),
                   ),
+                  child: authProvider.isLoading
+                      ? CircularProgressIndicator()
+                      : Text(AppStrings.signOut),
                 );
               },
             ),
@@ -302,13 +304,17 @@ class _SettingsScreenState extends State<SettingsScreen> {
       await Provider.of<SwapProvider>(context, listen: false)
           .updateSwapStatus(swapId, status);
       
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Swap ${status.name}')),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Swap ${status.name}')),
+        );
+      }
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error updating swap: ${e.toString()}')),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Error updating swap: ${e.toString()}')),
+        );
+      }
     }
   }
 
@@ -316,9 +322,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
     try {
       await Provider.of<AuthProvider>(context, listen: false).signOut();
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error signing out: ${e.toString()}')),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Error signing out: ${e.toString()}')),
+        );
+      }
     }
   }
 }

@@ -12,16 +12,16 @@ class ChatDetailScreen extends StatefulWidget {
   final SwapModel swap;
 
   const ChatDetailScreen({
-    Key? key,
+    super.key,
     required this.chatRoom,
     required this.swap,
-  }) : super(key: key);
+  });
 
   @override
-  _ChatDetailScreenState createState() => _ChatDetailScreenState();
+  ChatDetailScreenState createState() => ChatDetailScreenState();
 }
 
-class _ChatDetailScreenState extends State<ChatDetailScreen> {
+class ChatDetailScreenState extends State<ChatDetailScreen> {
   final _messageController = TextEditingController();
   final _scrollController = ScrollController();
 
@@ -73,7 +73,7 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
         children: [
           Container(
             padding: EdgeInsets.all(8),
-            color: _getStatusColor(widget.swap.status).withOpacity(0.1),
+            color: _getStatusColor(widget.swap.status).withValues(alpha: 0.1),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -146,7 +146,7 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
               color: Colors.white,
               boxShadow: [
                 BoxShadow(
-                  color: Colors.grey.withOpacity(0.2),
+                  color: Colors.grey.withValues(alpha: 0.2),
                   spreadRadius: 1,
                   blurRadius: 3,
                   offset: Offset(0, -1),
@@ -200,9 +200,11 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
 
       _messageController.clear();
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error sending message: ${e.toString()}')),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Error sending message: ${e.toString()}')),
+        );
+      }
     }
   }
 
@@ -211,17 +213,21 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
       await Provider.of<SwapProvider>(context, listen: false)
           .updateSwapStatus(widget.swap.id, status);
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Swap ${status.name}')),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Swap ${status.name}')),
+        );
 
-      setState(() {
-        // This will trigger a rebuild with the updated status
-      });
+        setState(() {
+          // This will trigger a rebuild with the updated status
+        });
+      }
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error updating swap: ${e.toString()}')),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Error updating swap: ${e.toString()}')),
+        );
+      }
     }
   }
 

@@ -53,7 +53,7 @@ class SwapService {
       DocumentReference docRef = await _firestore.collection('swaps').add(swap.toMap());
       return docRef.id;
     } catch (e) {
-      throw e;
+      rethrow;
     }
   }
 
@@ -64,7 +64,7 @@ class SwapService {
         'updatedAt': DateTime.now().millisecondsSinceEpoch,
       });
     } catch (e) {
-      throw e;
+      rethrow;
     }
   }
 
@@ -75,7 +75,7 @@ class SwapService {
         return SwapModel.fromMap(doc.data() as Map<String, dynamic>, doc.id);
       }
     } catch (e) {
-      throw e;
+      rethrow;
     }
     return null;
   }
@@ -91,7 +91,7 @@ class SwapService {
       
       return query.docs.isNotEmpty;
     } catch (e) {
-      throw e;
+      rethrow;
     }
   }
 }

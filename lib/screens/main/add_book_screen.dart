@@ -10,13 +10,13 @@ import '../../utils/constants.dart';
 class AddBookScreen extends StatefulWidget {
   final BookModel? book;
 
-  const AddBookScreen({Key? key, this.book}) : super(key: key);
+  const AddBookScreen({super.key, this.book});
 
   @override
-  _AddBookScreenState createState() => _AddBookScreenState();
+  AddBookScreenState createState() => AddBookScreenState();
 }
 
-class _AddBookScreenState extends State<AddBookScreen> {
+class AddBookScreenState extends State<AddBookScreen> {
   final _formKey = GlobalKey<FormState>();
   final _titleController = TextEditingController();
   final _authorController = TextEditingController();
@@ -89,7 +89,7 @@ class _AddBookScreenState extends State<AddBookScreen> {
                       ),
                       SizedBox(height: 8),
                       DropdownButtonFormField<BookCondition>(
-                        value: _selectedCondition,
+                        initialValue: _selectedCondition,
                         decoration: InputDecoration(
                           border: OutlineInputBorder(),
                         ),
@@ -162,14 +162,14 @@ class _AddBookScreenState extends State<AddBookScreen> {
                 builder: (context, bookProvider, child) {
                   return ElevatedButton(
                     onPressed: bookProvider.isLoading ? null : _saveBook,
-                    child: bookProvider.isLoading
-                        ? CircularProgressIndicator()
-                        : Text(isEditing ? 'Update Book' : 'Add Book'),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: AppConstants.primaryColor,
                       foregroundColor: Colors.white,
                       minimumSize: Size(double.infinity, 48),
                     ),
+                    child: bookProvider.isLoading
+                        ? CircularProgressIndicator()
+                        : Text(isEditing ? 'Update Book' : 'Add Book'),
                   );
                 },
               ),
@@ -204,9 +204,11 @@ class _AddBookScreenState extends State<AddBookScreen> {
           
           await bookProvider.updateBook(widget.book!.id, updatedBook, _selectedImage);
           
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Book updated successfully')),
-          );
+          if (mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text('Book updated successfully')),
+            );
+          }
         } else {
           BookModel newBook = BookModel(
             id: '',
@@ -221,16 +223,22 @@ class _AddBookScreenState extends State<AddBookScreen> {
 
           await bookProvider.createBook(newBook, _selectedImage);
           
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Book added successfully')),
-          );
+          if (mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text('Book added successfully')),
+            );
+          }
         }
 
-        Navigator.pop(context);
+        if (mounted) {
+          Navigator.pop(context);
+        }
       } catch (e) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Error: ${e.toString()}')),
-        );
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Error: ${e.toString()}')),
+          );
+        }
       }
     }
   }

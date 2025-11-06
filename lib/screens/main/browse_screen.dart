@@ -8,7 +8,7 @@ import '../../models/book_model.dart';
 import '../../utils/constants.dart';
 
 class BrowseScreen extends StatelessWidget {
-  const BrowseScreen({Key? key}) : super(key: key);
+  const BrowseScreen({super.key});
   
   @override
   Widget build(BuildContext context) {
@@ -54,7 +54,7 @@ class BrowseScreen extends StatelessWidget {
         borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
-            color: Colors.grey.withOpacity(0.2),
+            color: Colors.grey.withValues(alpha: 0.2),
             spreadRadius: 1,
             blurRadius: 6,
             offset: const Offset(0, 2),
@@ -223,13 +223,17 @@ class BrowseScreen extends StatelessWidget {
                   [authProvider.currentUser!.uid, book.ownerId],
                 );
                 
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text('Swap offer sent!')),
-                );
+                if (context.mounted) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text('Swap offer sent!')),
+                  );
+                }
               } catch (e) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text(e.toString())),
-                );
+                if (context.mounted) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text(e.toString())),
+                  );
+                }
               }
             },
             child: Text('Send Offer'),

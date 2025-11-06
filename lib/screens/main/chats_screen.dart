@@ -9,6 +9,8 @@ import '../../utils/constants.dart';
 import 'chat_detail_screen.dart';
 
 class ChatsScreen extends StatelessWidget {
+  const ChatsScreen({super.key});
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(

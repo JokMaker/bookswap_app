@@ -1,10 +1,14 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import '../models/user_model.dart';
 
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final GoogleSignIn _googleSignIn = GoogleSignIn(
+    scopes: ['email', 'profile'],
+  );
 
   User? get currentUser => _auth.currentUser;
   Stream<User?> get authStateChanges => _auth.authStateChanges();
@@ -32,7 +36,7 @@ class AuthService {
         return userModel;
       }
     } catch (e) {
-      throw e;
+      rethrow;
     }
     return null;
   }
@@ -56,13 +60,9 @@ class AuthService {
         }
       }
     } catch (e) {
-      throw e;
+      rethrow;
     }
     return null;
-  }
-
-  Future<void> signOut() async {
-    await _auth.signOut();
   }
 
   Future<void> sendEmailVerification() async {
@@ -81,5 +81,59 @@ class AuthService {
       }
     }
     return null;
+  }
+
+  // Google Sign In
+  Future<UserModel?> signInWithGoogle() async {
+    try {
+      // Sign out first to ensure clean state
+      await _googleSignIn.signOut();
+      
+      final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
+      if (googleUser == null) {
+        throw Exception('Google sign-in was cancelled');
+      }
+
+      final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
+      
+      if (googleAuth.accessToken == null || googleAuth.idToken == null) {
+        throw Exception('Failed to get Google authentication tokens');
+      }
+      
+      final credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
+      );
+
+      UserCredential result = await _auth.signInWithCredential(credential);
+      User? user = result.user;
+      
+      if (user != null) {
+        UserModel userModel = UserModel(
+          uid: user.uid,
+          email: user.email ?? '',
+          displayName: user.displayName ?? 'User',
+          emailVerified: true, // Google accounts are pre-verified
+          createdAt: DateTime.now(),
+        );
+        
+        await _firestore.collection('users').doc(user.uid).set(
+          userModel.toMap(),
+          SetOptions(merge: true),
+        );
+        return userModel;
+      }
+    } catch (e) {
+      rethrow;
+    }
+    return null;
+  }
+
+  // Sign out from all providers
+  Future<void> signOut() async {
+    await Future.wait([
+      _auth.signOut(),
+      _googleSignIn.signOut(),
+    ]);
   }
 }

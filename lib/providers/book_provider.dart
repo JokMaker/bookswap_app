@@ -36,7 +36,7 @@ class BookProvider with ChangeNotifier {
     } catch (e) {
       _isLoading = false;
       notifyListeners();
-      throw e;
+      rethrow;
     }
 
     _isLoading = false;
@@ -52,7 +52,7 @@ class BookProvider with ChangeNotifier {
     } catch (e) {
       _isLoading = false;
       notifyListeners();
-      throw e;
+      rethrow;
     }
 
     _isLoading = false;
@@ -68,7 +68,7 @@ class BookProvider with ChangeNotifier {
     } catch (e) {
       _isLoading = false;
       notifyListeners();
-      throw e;
+      rethrow;
     }
 
     _isLoading = false;
