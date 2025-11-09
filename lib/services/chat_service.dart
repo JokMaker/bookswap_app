@@ -77,6 +77,7 @@ class ChatService {
 
       await _firestore.collection('chats').doc(chatRoomId).update({
         'lastMessageAt': DateTime.now().millisecondsSinceEpoch,
+        'lastMessage': message,
       });
     } catch (e) {
       rethrow;

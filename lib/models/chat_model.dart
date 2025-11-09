@@ -45,6 +45,7 @@ class ChatRoom {
   final int status;
   final DateTime createdAt;
   final DateTime lastMessageAt;
+  final String? lastMessage;
 
   ChatRoom({
     required this.id,
@@ -58,6 +59,7 @@ class ChatRoom {
     required this.status,
     required this.createdAt,
     required this.lastMessageAt,
+    this.lastMessage,
   });
 
   factory ChatRoom.fromMap(Map<String, dynamic> map, String id) {
@@ -73,6 +75,7 @@ class ChatRoom {
       status: map['status'] ?? 0,
       createdAt: DateTime.fromMillisecondsSinceEpoch(map['createdAt'] ?? 0),
       lastMessageAt: DateTime.fromMillisecondsSinceEpoch(map['lastMessageAt'] ?? 0),
+      lastMessage: map['lastMessage'],
     );
   }
 
@@ -88,6 +91,7 @@ class ChatRoom {
       'status': status,
       'createdAt': createdAt.millisecondsSinceEpoch,
       'lastMessageAt': lastMessageAt.millisecondsSinceEpoch,
+      if (lastMessage != null) 'lastMessage': lastMessage,
     };
   }
 }

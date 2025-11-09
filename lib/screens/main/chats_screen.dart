@@ -70,7 +70,21 @@ class ChatsScreen extends StatelessWidget {
                     child: Icon(Icons.person, color: Color(0xFF1A1A2E)),
                   ),
                   title: Text(otherUserEmail, style: TextStyle(color: Colors.white)),
-                  subtitle: Text('Book: ${chatRoom.bookTitle}', style: TextStyle(color: Colors.white60)),
+                  subtitle: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text('Book: ${chatRoom.bookTitle}', style: TextStyle(color: Colors.white60, fontSize: 12)),
+                      if (chatRoom.lastMessage != null) ...[
+                        SizedBox(height: 2),
+                        Text(
+                          chatRoom.lastMessage!.length > 30 
+                              ? '${chatRoom.lastMessage!.substring(0, 30)}...' 
+                              : chatRoom.lastMessage!,
+                          style: TextStyle(color: Colors.white38, fontSize: 11),
+                        ),
+                      ],
+                    ],
+                  ),
                   trailing: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
