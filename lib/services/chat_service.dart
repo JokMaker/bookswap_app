@@ -6,12 +6,25 @@ class ChatService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final Uuid _uuid = const Uuid();
 
-  Future<String> createChatRoom(String swapId, List<String> participants) async {
+  Future<String> createChatRoom(String swapId, List<String> participants, {
+    required String bookTitle,
+    required String requesterId,
+    required String requesterEmail,
+    required String ownerId,
+    required String ownerEmail,
+    required int status,
+  }) async {
     try {
       ChatRoom chatRoom = ChatRoom(
         id: _uuid.v4(),
         participants: participants,
         swapId: swapId,
+        bookTitle: bookTitle,
+        requesterId: requesterId,
+        requesterEmail: requesterEmail,
+        ownerId: ownerId,
+        ownerEmail: ownerEmail,
+        status: status,
         createdAt: DateTime.now(),
         lastMessageAt: DateTime.now(),
       );

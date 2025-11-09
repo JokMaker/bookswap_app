@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../providers/chat_provider.dart';
 import '../../providers/auth_provider.dart';
-import '../../providers/swap_provider.dart';
 import '../../models/chat_model.dart';
 import '../../models/swap_model.dart';
 import '../../utils/constants.dart';
@@ -14,10 +13,12 @@ class ChatsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color(0xFF1A1A2E),
       appBar: AppBar(
         title: Text(AppStrings.chats),
-        backgroundColor: AppConstants.primaryColor,
+        backgroundColor: const Color(0xFF1A1A2E),
         foregroundColor: Colors.white,
+        elevation: 0,
       ),
       body: Consumer<ChatProvider>(
         builder: (context, chatProvider, child) {
@@ -29,18 +30,20 @@ class ChatsScreen extends StatelessWidget {
                   Icon(
                     Icons.chat_outlined,
                     size: 64,
-                    color: Colors.grey,
+                    color: Color(0xFFFFC107),
                   ),
                   SizedBox(height: 16),
                   Text(
                     'No chats yet',
-                    style: Theme.of(context).textTheme.titleMedium,
+                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                      color: Colors.white,
+                    ),
                   ),
                   SizedBox(height: 8),
                   Text(
                     'Start a swap to begin chatting',
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      color: Colors.grey[600],
+                      color: Colors.white60,
                     ),
                   ),
                 ],
@@ -52,75 +55,71 @@ class ChatsScreen extends StatelessWidget {
             itemCount: chatProvider.chatRooms.length,
             itemBuilder: (context, index) {
               ChatRoom chatRoom = chatProvider.chatRooms[index];
-              return FutureBuilder<SwapModel?>(
-                future: Provider.of<SwapProvider>(context, listen: false)
-                    .getSwap(chatRoom.swapId),
-                builder: (context, snapshot) {
-                  if (!snapshot.hasData) {
-                    return ListTile(
-                      leading: CircularProgressIndicator(),
-                      title: Text('Loading...'),
+              final authProvider = Provider.of<AuthProvider>(context, listen: false);
+              String otherUserEmail = chatRoom.requesterId == authProvider.currentUser?.uid
+                  ? chatRoom.ownerEmail
+                  : chatRoom.requesterEmail;
+              SwapStatus status = SwapStatus.values[chatRoom.status];
+
+              return Card(
+                margin: EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+                color: const Color(0xFF16213E),
+                child: ListTile(
+                  leading: CircleAvatar(
+                    backgroundColor: const Color(0xFFFFC107),
+                    child: Icon(Icons.person, color: Color(0xFF1A1A2E)),
+                  ),
+                  title: Text(otherUserEmail, style: TextStyle(color: Colors.white)),
+                  subtitle: Text('Book: ${chatRoom.bookTitle}', style: TextStyle(color: Colors.white60)),
+                  trailing: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        _formatTime(chatRoom.lastMessageAt),
+                        style: TextStyle(fontSize: 12, color: Colors.grey),
+                      ),
+                      SizedBox(height: 4),
+                      Container(
+                        padding: EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                        decoration: BoxDecoration(
+                          color: _getStatusColor(status),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: Text(
+                          _getStatusText(status),
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 10,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  onTap: () {
+                    SwapModel swap = SwapModel(
+                      id: chatRoom.swapId,
+                      bookId: '',
+                      bookTitle: chatRoom.bookTitle,
+                      requesterId: chatRoom.requesterId,
+                      requesterEmail: chatRoom.requesterEmail,
+                      ownerId: chatRoom.ownerId,
+                      ownerEmail: chatRoom.ownerEmail,
+                      status: status,
+                      createdAt: chatRoom.createdAt,
+                      updatedAt: chatRoom.lastMessageAt,
                     );
-                  }
-
-                  SwapModel? swap = snapshot.data;
-                  if (swap == null) {
-                    return SizedBox.shrink();
-                  }
-
-                  final authProvider = Provider.of<AuthProvider>(context, listen: false);
-                  String otherUserEmail = swap.requesterId == authProvider.currentUser?.uid
-                      ? swap.ownerEmail
-                      : swap.requesterEmail;
-
-                  return Card(
-                    margin: EdgeInsets.symmetric(horizontal: 16, vertical: 4),
-                    child: ListTile(
-                      leading: CircleAvatar(
-                        backgroundColor: AppConstants.primaryColor,
-                        child: Icon(Icons.person, color: Colors.white),
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ChatDetailScreen(
+                          chatRoom: chatRoom,
+                          swap: swap,
+                        ),
                       ),
-                      title: Text(otherUserEmail),
-                      subtitle: Text('Book: ${swap.bookTitle}'),
-                      trailing: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            _formatTime(chatRoom.lastMessageAt),
-                            style: TextStyle(fontSize: 12, color: Colors.grey),
-                          ),
-                          SizedBox(height: 4),
-                          Container(
-                            padding: EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-                            decoration: BoxDecoration(
-                              color: _getStatusColor(swap.status),
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                            child: Text(
-                              _getStatusText(swap.status),
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 10,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => ChatDetailScreen(
-                              chatRoom: chatRoom,
-                              swap: swap,
-                            ),
-                          ),
-                        );
-                      },
-                    ),
-                  );
-                },
+                    );
+                  },
+                ),
               );
             },
           );

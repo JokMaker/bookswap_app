@@ -26,7 +26,14 @@ class ChatProvider with ChangeNotifier {
     });
   }
 
-  Future<String> createChatRoom(String swapId, List<String> participants) async {
+  Future<String> createChatRoom(String swapId, List<String> participants, {
+    required String bookTitle,
+    required String requesterId,
+    required String requesterEmail,
+    required String ownerId,
+    required String ownerEmail,
+    required int status,
+  }) async {
     _isLoading = true;
     notifyListeners();
 
@@ -38,7 +45,16 @@ class ChatProvider with ChangeNotifier {
         return existingChatRoom;
       }
 
-      String chatRoomId = await _chatService.createChatRoom(swapId, participants);
+      String chatRoomId = await _chatService.createChatRoom(
+        swapId,
+        participants,
+        bookTitle: bookTitle,
+        requesterId: requesterId,
+        requesterEmail: requesterEmail,
+        ownerId: ownerId,
+        ownerEmail: ownerEmail,
+        status: status,
+      );
       _isLoading = false;
       notifyListeners();
       return chatRoomId;
