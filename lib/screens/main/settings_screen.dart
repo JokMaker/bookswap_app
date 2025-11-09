@@ -37,6 +37,8 @@ class SettingsScreenState extends State<SettingsScreen> {
             SizedBox(height: 24),
             _buildNotificationSection(),
             SizedBox(height: 24),
+            _buildAboutSection(),
+            SizedBox(height: 24),
             _buildSignOutSection(),
           ],
         ),
@@ -264,6 +266,35 @@ class SettingsScreenState extends State<SettingsScreen> {
                 });
               },
               activeThumbColor: const Color(0xFFFFC107),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildAboutSection() {
+    return Card(
+      color: const Color(0xFF16213E),
+      child: Padding(
+        padding: EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'About',
+              style: Theme.of(context).textTheme.titleLarge?.copyWith(color: Colors.white),
+            ),
+            SizedBox(height: 16),
+            ListTile(
+              leading: Icon(Icons.info_outline, color: Color(0xFFFFC107)),
+              title: Text('Version', style: TextStyle(color: Colors.white)),
+              subtitle: Text('1.0.0', style: TextStyle(color: Colors.white60)),
+            ),
+            ListTile(
+              leading: Icon(Icons.book, color: Color(0xFFFFC107)),
+              title: Text('About BookSwap', style: TextStyle(color: Colors.white)),
+              subtitle: Text('A platform for students to exchange textbooks', style: TextStyle(color: Colors.white60)),
             ),
           ],
         ),
