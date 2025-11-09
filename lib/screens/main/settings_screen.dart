@@ -193,6 +193,8 @@ class SettingsScreenState extends State<SettingsScreen> {
                     ),
                   )),
                 ],
+                SizedBox(height: 16),
+                _buildSwapHistory(swapProvider),
               ],
             ),
           ),
@@ -333,6 +335,76 @@ class SettingsScreenState extends State<SettingsScreen> {
           ],
         ),
       ),
+    );
+  }
+
+  Widget _buildSwapHistory(SwapProvider swapProvider) {
+    List<SwapModel> acceptedSwaps = [...swapProvider.userSwaps, ...swapProvider.receivedSwaps]
+        .where((swap) => swap.status == SwapStatus.accepted)
+        .toList();
+    List<SwapModel> rejectedSwaps = [...swapProvider.userSwaps, ...swapProvider.receivedSwaps]
+        .where((swap) => swap.status == SwapStatus.rejected)
+        .toList();
+
+    if (acceptedSwaps.isEmpty && rejectedSwaps.isEmpty) {
+      return SizedBox.shrink();
+    }
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        if (acceptedSwaps.isNotEmpty) ...[
+          Text(
+            'Accepted Swaps:',
+            style: Theme.of(context).textTheme.titleMedium?.copyWith(color: Colors.white),
+          ),
+          SizedBox(height: 8),
+          ...acceptedSwaps.take(3).map((swap) => ListTile(
+            leading: Icon(Icons.check_circle, color: Colors.green),
+            title: Text(swap.bookTitle, style: TextStyle(color: Colors.white)),
+            subtitle: Text(
+              swap.requesterId == Provider.of<AuthProvider>(context, listen: false).currentUser?.uid
+                  ? 'With: ${swap.ownerEmail}'
+                  : 'With: ${swap.requesterEmail}',
+              style: TextStyle(color: Colors.white60),
+            ),
+            trailing: Container(
+              padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+              decoration: BoxDecoration(
+                color: Colors.green,
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: Text('ACCEPTED', style: TextStyle(color: Colors.white, fontSize: 10)),
+            ),
+          )),
+          SizedBox(height: 16),
+        ],
+        if (rejectedSwaps.isNotEmpty) ...[
+          Text(
+            'Rejected Swaps:',
+            style: Theme.of(context).textTheme.titleMedium?.copyWith(color: Colors.white),
+          ),
+          SizedBox(height: 8),
+          ...rejectedSwaps.take(3).map((swap) => ListTile(
+            leading: Icon(Icons.cancel, color: Colors.red),
+            title: Text(swap.bookTitle, style: TextStyle(color: Colors.white)),
+            subtitle: Text(
+              swap.requesterId == Provider.of<AuthProvider>(context, listen: false).currentUser?.uid
+                  ? 'With: ${swap.ownerEmail}'
+                  : 'With: ${swap.requesterEmail}',
+              style: TextStyle(color: Colors.white60),
+            ),
+            trailing: Container(
+              padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+              decoration: BoxDecoration(
+                color: Colors.red,
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: Text('REJECTED', style: TextStyle(color: Colors.white, fontSize: 10)),
+            ),
+          )),
+        ],
+      ],
     );
   }
 
