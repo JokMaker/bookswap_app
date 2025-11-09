@@ -63,6 +63,16 @@ class SwapService {
         'status': status.index,
         'updatedAt': DateTime.now().millisecondsSinceEpoch,
       });
+      
+      // Update chat room status
+      QuerySnapshot chatQuery = await _firestore
+          .collection('chats')
+          .where('swapId', isEqualTo: swapId)
+          .get();
+      
+      for (var doc in chatQuery.docs) {
+        await doc.reference.update({'status': status.index});
+      }
     } catch (e) {
       rethrow;
     }

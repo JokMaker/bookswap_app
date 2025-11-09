@@ -19,10 +19,12 @@ class SettingsScreenState extends State<SettingsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color(0xFF1A1A2E),
       appBar: AppBar(
         title: Text(AppStrings.settings),
-        backgroundColor: AppConstants.primaryColor,
+        backgroundColor: const Color(0xFF1A1A2E),
         foregroundColor: Colors.white,
+        elevation: 0,
       ),
       body: SingleChildScrollView(
         padding: EdgeInsets.all(16),
@@ -46,6 +48,7 @@ class SettingsScreenState extends State<SettingsScreen> {
     return Consumer<AuthProvider>(
       builder: (context, authProvider, child) {
         return Card(
+          color: const Color(0xFF16213E),
           child: Padding(
             padding: EdgeInsets.all(16),
             child: Column(
@@ -53,18 +56,18 @@ class SettingsScreenState extends State<SettingsScreen> {
               children: [
                 Text(
                   'Profile Information',
-                  style: Theme.of(context).textTheme.titleLarge,
+                  style: Theme.of(context).textTheme.titleLarge?.copyWith(color: Colors.white),
                 ),
                 SizedBox(height: 16),
                 Row(
                   children: [
                     CircleAvatar(
                       radius: 30,
-                      backgroundColor: AppConstants.primaryColor,
+                      backgroundColor: const Color(0xFFFFC107),
                       child: Icon(
                         Icons.person,
                         size: 30,
-                        color: Colors.white,
+                        color: Color(0xFF1A1A2E),
                       ),
                     ),
                     SizedBox(width: 16),
@@ -74,13 +77,13 @@ class SettingsScreenState extends State<SettingsScreen> {
                         children: [
                           Text(
                             authProvider.currentUser?.displayName ?? 'User',
-                            style: Theme.of(context).textTheme.titleMedium,
+                            style: Theme.of(context).textTheme.titleMedium?.copyWith(color: Colors.white),
                           ),
                           SizedBox(height: 4),
                           Text(
                             authProvider.currentUser?.email ?? '',
                             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                              color: Colors.grey[600],
+                              color: Colors.white60,
                             ),
                           ),
                           SizedBox(height: 4),
@@ -128,6 +131,7 @@ class SettingsScreenState extends State<SettingsScreen> {
             .toList();
 
         return Card(
+          color: const Color(0xFF16213E),
           child: Padding(
             padding: EdgeInsets.all(16),
             child: Column(
@@ -135,7 +139,7 @@ class SettingsScreenState extends State<SettingsScreen> {
               children: [
                 Text(
                   'Swap Offers',
-                  style: Theme.of(context).textTheme.titleLarge,
+                  style: Theme.of(context).textTheme.titleLarge?.copyWith(color: Colors.white),
                 ),
                 SizedBox(height: 16),
                 Row(
@@ -165,13 +169,13 @@ class SettingsScreenState extends State<SettingsScreen> {
                   SizedBox(height: 16),
                   Text(
                     'Recent Pending Offers:',
-                    style: Theme.of(context).textTheme.titleMedium,
+                    style: Theme.of(context).textTheme.titleMedium?.copyWith(color: Colors.white),
                   ),
                   SizedBox(height: 8),
                   ...pendingOffers.take(3).map((swap) => ListTile(
-                    leading: Icon(Icons.book, color: AppConstants.primaryColor),
-                    title: Text(swap.bookTitle),
-                    subtitle: Text('From: ${swap.requesterEmail}'),
+                    leading: Icon(Icons.book, color: Color(0xFFFFC107)),
+                    title: Text(swap.bookTitle, style: TextStyle(color: Colors.white)),
+                    subtitle: Text('From: ${swap.requesterEmail}', style: TextStyle(color: Colors.white60)),
                     trailing: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
@@ -219,7 +223,7 @@ class SettingsScreenState extends State<SettingsScreen> {
           title,
           style: TextStyle(
             fontSize: 12,
-            color: Colors.grey[600],
+            color: Colors.white60,
           ),
         ),
       ],
@@ -228,6 +232,7 @@ class SettingsScreenState extends State<SettingsScreen> {
 
   Widget _buildNotificationSection() {
     return Card(
+      color: const Color(0xFF16213E),
       child: Padding(
         padding: EdgeInsets.all(16),
         child: Column(
@@ -235,30 +240,30 @@ class SettingsScreenState extends State<SettingsScreen> {
           children: [
             Text(
               'Notification Preferences',
-              style: Theme.of(context).textTheme.titleLarge,
+              style: Theme.of(context).textTheme.titleLarge?.copyWith(color: Colors.white),
             ),
             SizedBox(height: 16),
             SwitchListTile(
-              title: Text('Push Notifications'),
-              subtitle: Text('Receive notifications for new swap offers'),
+              title: Text('Push Notifications', style: TextStyle(color: Colors.white)),
+              subtitle: Text('Receive notifications for new swap offers', style: TextStyle(color: Colors.white60)),
               value: _notificationsEnabled,
               onChanged: (value) {
                 setState(() {
                   _notificationsEnabled = value;
                 });
               },
-              activeThumbColor: AppConstants.primaryColor,
+              activeThumbColor: const Color(0xFFFFC107),
             ),
             SwitchListTile(
-              title: Text('Email Notifications'),
-              subtitle: Text('Receive email updates for swap activities'),
+              title: Text('Email Notifications', style: TextStyle(color: Colors.white)),
+              subtitle: Text('Receive email updates for swap activities', style: TextStyle(color: Colors.white60)),
               value: _emailNotifications,
               onChanged: (value) {
                 setState(() {
                   _emailNotifications = value;
                 });
               },
-              activeThumbColor: AppConstants.primaryColor,
+              activeThumbColor: const Color(0xFFFFC107),
             ),
           ],
         ),
@@ -268,6 +273,7 @@ class SettingsScreenState extends State<SettingsScreen> {
 
   Widget _buildSignOutSection() {
     return Card(
+      color: const Color(0xFF16213E),
       child: Padding(
         padding: EdgeInsets.all(16),
         child: Column(
@@ -275,7 +281,7 @@ class SettingsScreenState extends State<SettingsScreen> {
           children: [
             Text(
               'Account',
-              style: Theme.of(context).textTheme.titleLarge,
+              style: Theme.of(context).textTheme.titleLarge?.copyWith(color: Colors.white),
             ),
             SizedBox(height: 16),
             Consumer<AuthProvider>(

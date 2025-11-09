@@ -26,7 +26,7 @@ class SwapProvider with ChangeNotifier {
     });
   }
 
-  Future<void> createSwapOffer({
+  Future<String> createSwapOffer({
     required String bookId,
     required String bookTitle,
     required String requesterId,
@@ -43,7 +43,7 @@ class SwapProvider with ChangeNotifier {
         throw Exception('You already have a pending swap offer for this book');
       }
 
-      await _swapService.createSwapOffer(
+      String swapId = await _swapService.createSwapOffer(
         bookId: bookId,
         bookTitle: bookTitle,
         requesterId: requesterId,
@@ -51,14 +51,14 @@ class SwapProvider with ChangeNotifier {
         ownerId: ownerId,
         ownerEmail: ownerEmail,
       );
+      _isLoading = false;
+      notifyListeners();
+      return swapId;
     } catch (e) {
       _isLoading = false;
       notifyListeners();
       rethrow;
     }
-
-    _isLoading = false;
-    notifyListeners();
   }
 
   Future<void> updateSwapStatus(String swapId, SwapStatus status) async {

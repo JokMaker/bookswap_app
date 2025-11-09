@@ -13,7 +13,7 @@ class BrowseScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: const Color(0xFF1A1A2E),
       appBar: AppBar(
         backgroundColor: const Color(0xFF1A1A2E),
         title: const Text(
@@ -21,12 +21,16 @@ class BrowseScreen extends StatelessWidget {
           style: TextStyle(color: Colors.white),
         ),
         automaticallyImplyLeading: false,
+        elevation: 0,
       ),
       body: Consumer<BookProvider>(
         builder: (context, bookProvider, child) {
           if (bookProvider.allBooks.isEmpty) {
             return Center(
-              child: Text('No books available'),
+              child: Text(
+                'No books available',
+                style: TextStyle(color: Colors.white60),
+              ),
             );
           }
 
@@ -50,16 +54,9 @@ class BrowseScreen extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: const Color(0xFF16213E),
         borderRadius: BorderRadius.circular(12),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withValues(alpha: 0.2),
-            spreadRadius: 1,
-            blurRadius: 6,
-            offset: const Offset(0, 2),
-          ),
-        ],
+        border: Border.all(color: const Color(0xFFFFC107).withValues(alpha: 0.3)),
       ),
       child: Row(
         children: [
@@ -67,9 +64,9 @@ class BrowseScreen extends StatelessWidget {
             width: 80,
             height: 120,
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: const Color(0xFF1A1A2E),
               borderRadius: BorderRadius.circular(8),
-              border: Border.all(color: Colors.grey[300]!),
+              border: Border.all(color: const Color(0xFFFFC107).withValues(alpha: 0.5)),
             ),
             child: book.imageUrl != null
                 ? ClipRRect(
@@ -92,7 +89,7 @@ class BrowseScreen extends StatelessWidget {
                   style: const TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
-                    color: Color(0xFF1A1A2E),
+                    color: Colors.white,
                   ),
                 ),
                 const SizedBox(height: 8),
@@ -100,37 +97,33 @@ class BrowseScreen extends StatelessWidget {
                   book.author,
                   style: const TextStyle(
                     fontSize: 14,
-                    color: Colors.grey,
+                    color: Colors.white60,
                   ),
                 ),
                 const SizedBox(height: 8),
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
                   decoration: BoxDecoration(
-                    color: AppConstants.bookConditionLabels[book.condition] == 'Like New' 
-                        ? const Color(0xFFFFC107) 
-                        : Colors.grey[300],
+                    color: const Color(0xFFFFC107),
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: Text(
                     AppConstants.bookConditionLabels[book.condition]!,
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 12,
                       fontWeight: FontWeight.bold,
-                      color: AppConstants.bookConditionLabels[book.condition] == 'Like New' 
-                          ? const Color(0xFF1A1A2E) 
-                          : Colors.black87,
+                      color: Color(0xFF1A1A2E),
                     ),
                   ),
                 ),
                 const SizedBox(height: 8),
                 Row(
                   children: [
-                    const Icon(Icons.calendar_today, size: 14, color: Colors.grey),
+                    const Icon(Icons.calendar_today, size: 14, color: Colors.white60),
                     const SizedBox(width: 4),
                     Text(
                       _formatTime(book.createdAt),
-                      style: const TextStyle(fontSize: 12, color: Colors.grey),
+                      style: const TextStyle(fontSize: 12, color: Colors.white60),
                     ),
                     const Spacer(),
                     ElevatedButton(
@@ -163,7 +156,7 @@ class BrowseScreen extends StatelessWidget {
     return const Center(
       child: Icon(
         Icons.book,
-        color: Color(0xFF1A1A2E),
+        color: Color(0xFFFFC107),
         size: 32,
       ),
     );
@@ -208,7 +201,7 @@ class BrowseScreen extends StatelessWidget {
             onPressed: () async {
               Navigator.pop(context);
               try {
-                await swapProvider.createSwapOffer(
+                String swapId = await swapProvider.createSwapOffer(
                   bookId: book.id,
                   bookTitle: book.title,
                   requesterId: authProvider.currentUser!.uid,
@@ -217,10 +210,15 @@ class BrowseScreen extends StatelessWidget {
                   ownerEmail: book.ownerEmail,
                 );
                 
-                // Create chat room for the swap - using a placeholder swapId
                 await chatProvider.createChatRoom(
-                  '${book.id}_${authProvider.currentUser!.uid}',
+                  swapId,
                   [authProvider.currentUser!.uid, book.ownerId],
+                  bookTitle: book.title,
+                  requesterId: authProvider.currentUser!.uid,
+                  requesterEmail: authProvider.currentUser!.email,
+                  ownerId: book.ownerId,
+                  ownerEmail: book.ownerEmail,
+                  status: 0,
                 );
                 
                 if (context.mounted) {
