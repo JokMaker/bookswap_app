@@ -12,10 +12,12 @@ class MyListingsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color(0xFF1A1A2E),
       appBar: AppBar(
         title: Text(AppStrings.myListings),
-        backgroundColor: AppConstants.primaryColor,
+        backgroundColor: const Color(0xFF1A1A2E),
         foregroundColor: Colors.white,
+        elevation: 0,
       ),
       body: Consumer<BookProvider>(
         builder: (context, bookProvider, child) {
@@ -27,18 +29,20 @@ class MyListingsScreen extends StatelessWidget {
                   Icon(
                     Icons.book_outlined,
                     size: 64,
-                    color: Colors.grey,
+                    color: Color(0xFFFFC107),
                   ),
                   SizedBox(height: 16),
                   Text(
                     'No books listed yet',
-                    style: Theme.of(context).textTheme.titleMedium,
+                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                      color: Colors.white,
+                    ),
                   ),
                   SizedBox(height: 8),
                   Text(
                     'Tap the + button to add your first book',
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      color: Colors.grey[600],
+                      color: Colors.white60,
                     ),
                   ),
                 ],
@@ -63,8 +67,8 @@ class MyListingsScreen extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => _addBook(context),
-        backgroundColor: AppConstants.primaryColor,
-        child: Icon(Icons.add, color: Colors.white),
+        backgroundColor: const Color(0xFFFFC107),
+        child: Icon(Icons.add, color: Color(0xFF1A1A2E)),
       ),
     );
   }

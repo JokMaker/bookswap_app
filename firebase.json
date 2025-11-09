@@ -1,1 +1,42 @@
-{"flutter":{"platforms":{"android":{"default":{"projectId":"bookswap-ad44f","appId":"1:600416819771:android:b35e301f48467984ff1a1e","fileOutput":"android/app/google-services.json"}},"ios":{"default":{"projectId":"bookswap-ad44f","appId":"1:600416819771:ios:909a8cd3c1bef534ff1a1e","uploadDebugSymbols":false,"fileOutput":"ios/Runner/GoogleService-Info.plist"}},"macos":{"default":{"projectId":"bookswap-bf31f","appId":"1:556154334817:ios:556d39c5c5696d988e0420","uploadDebugSymbols":false,"fileOutput":"macos/Runner/GoogleService-Info.plist"}},"dart":{"lib/firebase_options.dart":{"projectId":"bookswap-ad44f","configurations":{"android":"1:600416819771:android:b35e301f48467984ff1a1e","ios":"1:600416819771:ios:909a8cd3c1bef534ff1a1e","web":"1:600416819771:web:3dd8f9ab3425d9fcff1a1e"}}}}}}
+{
+  "flutter": {
+    "platforms": {
+      "android": {
+        "default": {
+          "projectId": "bookswap-ad44f",
+          "appId": "1:600416819771:android:b35e301f48467984ff1a1e",
+          "fileOutput": "android/app/google-services.json"
+        }
+      },
+      "ios": {
+        "default": {
+          "projectId": "bookswap-ad44f",
+          "appId": "1:600416819771:ios:909a8cd3c1bef534ff1a1e",
+          "uploadDebugSymbols": false,
+          "fileOutput": "ios/Runner/GoogleService-Info.plist"
+        }
+      },
+      "macos": {
+        "default": {
+          "projectId": "bookswap-bf31f",
+          "appId": "1:556154334817:ios:556d39c5c5696d988e0420",
+          "uploadDebugSymbols": false,
+          "fileOutput": "macos/Runner/GoogleService-Info.plist"
+        }
+      },
+      "dart": {
+        "lib/firebase_options.dart": {
+          "projectId": "bookswap-ad44f",
+          "configurations": {
+            "android": "1:600416819771:android:b35e301f48467984ff1a1e",
+            "ios": "1:600416819771:ios:909a8cd3c1bef534ff1a1e",
+            "web": "1:600416819771:web:3dd8f9ab3425d9fcff1a1e"
+          }
+        }
+      }
+    }
+  },
+  "storage": {
+    "rules": "storage.rules"
+  }
+}

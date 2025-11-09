@@ -218,9 +218,12 @@ class SignInScreenState extends State<SignInScreen> {
       try {
         final authProvider = Provider.of<AuthProvider>(context, listen: false);
         await authProvider.signIn(
-          _emailController.text,
+          _emailController.text.trim(),
           _passwordController.text,
         );
+        if (mounted) {
+          Navigator.pop(context);
+        }
       } catch (e) {
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
@@ -238,6 +241,9 @@ class SignInScreenState extends State<SignInScreen> {
     try {
       final authProvider = Provider.of<AuthProvider>(context, listen: false);
       await authProvider.signInWithGoogle();
+      if (mounted) {
+        Navigator.pop(context);
+      }
     } catch (e) {
       if (mounted) {
         String errorMessage = 'Google sign-in failed';

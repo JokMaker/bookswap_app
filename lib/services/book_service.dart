@@ -1,6 +1,8 @@
 import 'dart:io';
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:uuid/uuid.dart';
 import '../models/book_model.dart';
 
@@ -30,14 +32,20 @@ class BookService {
             .toList());
   }
 
-  Future<String> createBook(BookModel book, File? imageFile) async {
+  Future<String> createBook(BookModel book, XFile? imageFile) async {
     try {
       String? imageUrl;
       
       if (imageFile != null) {
         String fileName = '${_uuid.v4()}.jpg';
         Reference ref = _storage.ref().child('book_images/$fileName');
-        await ref.putFile(imageFile);
+        
+        if (kIsWeb) {
+          final bytes = await imageFile.readAsBytes();
+          await ref.putData(bytes);
+        } else {
+          await ref.putFile(File(imageFile.path));
+        }
         imageUrl = await ref.getDownloadURL();
       }
 
@@ -52,14 +60,20 @@ class BookService {
     }
   }
 
-  Future<void> updateBook(String bookId, BookModel updatedBook, File? newImageFile) async {
+  Future<void> updateBook(String bookId, BookModel updatedBook, XFile? newImageFile) async {
     try {
       String? imageUrl = updatedBook.imageUrl;
       
       if (newImageFile != null) {
         String fileName = '${_uuid.v4()}.jpg';
         Reference ref = _storage.ref().child('book_images/$fileName');
-        await ref.putFile(newImageFile);
+        
+        if (kIsWeb) {
+          final bytes = await newImageFile.readAsBytes();
+          await ref.putData(bytes);
+        } else {
+          await ref.putFile(File(newImageFile.path));
+        }
         imageUrl = await ref.getDownloadURL();
       }
 

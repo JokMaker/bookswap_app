@@ -1,5 +1,5 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import '../models/book_model.dart';
 import '../services/book_service.dart';
 
@@ -27,7 +27,7 @@ class BookProvider with ChangeNotifier {
     });
   }
 
-  Future<void> createBook(BookModel book, File? imageFile) async {
+  Future<void> createBook(BookModel book, XFile? imageFile) async {
     _isLoading = true;
     notifyListeners();
 
@@ -43,7 +43,7 @@ class BookProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> updateBook(String bookId, BookModel updatedBook, File? newImageFile) async {
+  Future<void> updateBook(String bookId, BookModel updatedBook, XFile? newImageFile) async {
     _isLoading = true;
     notifyListeners();
 
