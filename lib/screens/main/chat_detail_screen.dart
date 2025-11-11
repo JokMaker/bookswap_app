@@ -5,7 +5,6 @@ import '../../providers/auth_provider.dart';
 import '../../providers/swap_provider.dart';
 import '../../models/chat_model.dart';
 import '../../models/swap_model.dart';
-import '../../utils/constants.dart';
 
 class ChatDetailScreen extends StatefulWidget {
   final ChatRoom chatRoom;
@@ -386,17 +385,6 @@ class ChatDetailScreenState extends State<ChatDetailScreen> {
         return Colors.green;
       case SwapStatus.rejected:
         return Colors.red;
-    }
-  }
-
-  IconData _getStatusIcon(SwapStatus status) {
-    switch (status) {
-      case SwapStatus.pending:
-        return Icons.hourglass_empty;
-      case SwapStatus.accepted:
-        return Icons.check_circle;
-      case SwapStatus.rejected:
-        return Icons.cancel;
     }
   }
 

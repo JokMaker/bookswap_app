@@ -1,7 +1,3 @@
-/// Authentication Provider
-/// Manages user authentication state using Firebase Auth
-/// Implements ChangeNotifier for reactive UI updates
-
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../models/user_model.dart';
@@ -22,8 +18,8 @@ class AuthProvider with ChangeNotifier {
   bool get isLoading => _isLoading;
   bool get isAuthenticated => _currentUser != null;
 
-  /// Constructor: Sets up listener for authentication state changes
-  /// Automatically updates UI when user signs in/out
+  /// Authentication Provider - Manages user authentication state using Firebase Auth.
+  /// Constructor sets up listener for authentication state changes.
   AuthProvider() {
     // Listen to Firebase Auth state changes (sign in, sign out, email verification)
     _authService.authStateChanges.listen((User? user) async {

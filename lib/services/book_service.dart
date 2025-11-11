@@ -1,7 +1,3 @@
-/// Book Service
-/// Handles all Firebase operations related to books
-/// Includes CRUD operations and image upload to Firebase Storage
-
 import 'dart:io';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -10,6 +6,8 @@ import 'package:image_picker/image_picker.dart';
 import 'package:uuid/uuid.dart';
 import '../models/book_model.dart';
 
+/// Book Service - Handles all Firebase operations related to books.
+/// Includes CRUD operations and image upload to Firebase Storage.
 class BookService {
   // Firestore instance for database operations
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;

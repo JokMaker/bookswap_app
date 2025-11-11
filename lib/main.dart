@@ -1,12 +1,3 @@
-/// BookSwap App - A Flutter mobile application for students to exchange textbooks
-/// 
-/// This app provides:
-/// - Firebase Authentication with email verification
-/// - Book listing marketplace with CRUD operations
-/// - Swap offer system with real-time status updates
-/// - Chat functionality between users
-/// - State management using Provider pattern
-
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
@@ -19,8 +10,8 @@ import 'screens/auth/signin_screen.dart';
 import 'screens/auth/signup_screen.dart';
 import 'screens/main/home_screen.dart';
 
-/// Entry point of the application
-/// Initializes Firebase and runs the app with Provider state management
+/// BookSwap App - A Flutter mobile application for students to exchange textbooks
+/// Entry point of the application. Initializes Firebase and runs the app.
 void main() async {
   // Ensure Flutter bindings are initialized before Firebase
   WidgetsFlutterBinding.ensureInitialized();
