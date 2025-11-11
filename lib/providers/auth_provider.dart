@@ -1,28 +1,49 @@
+/// Authentication Provider
+/// Manages user authentication state using Firebase Auth
+/// Implements ChangeNotifier for reactive UI updates
+
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../models/user_model.dart';
 import '../services/auth_service.dart';
 
 class AuthProvider with ChangeNotifier {
+  // Service layer for Firebase Auth operations
   final AuthService _authService = AuthService();
+  
+  // Current authenticated user
   UserModel? _currentUser;
+  
+  // Loading state for async operations
   bool _isLoading = false;
 
+  // Getters for accessing private state
   UserModel? get currentUser => _currentUser;
   bool get isLoading => _isLoading;
   bool get isAuthenticated => _currentUser != null;
 
+  /// Constructor: Sets up listener for authentication state changes
+  /// Automatically updates UI when user signs in/out
   AuthProvider() {
+    // Listen to Firebase Auth state changes (sign in, sign out, email verification)
     _authService.authStateChanges.listen((User? user) async {
       if (user != null && user.emailVerified) {
+        // User is authenticated and email is verified
         _currentUser = await _authService.getCurrentUserModel();
       } else {
+        // User is not authenticated or email not verified
         _currentUser = null;
       }
+      // Notify all listening widgets to rebuild
       notifyListeners();
     });
   }
 
+  /// Sign up a new user with email and password
+  /// Sends email verification automatically
+  /// @param email User's email address
+  /// @param password User's password
+  /// @param displayName User's display name
   Future<void> signUp(String email, String password, String displayName) async {
     _isLoading = true;
     notifyListeners();
@@ -40,6 +61,10 @@ class AuthProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  /// Sign in existing user with email and password
+  /// Reloads user to get latest email verification status
+  /// @param email User's email address
+  /// @param password User's password
   Future<void> signIn(String email, String password) async {
     _isLoading = true;
     notifyListeners();
@@ -83,6 +108,8 @@ class AuthProvider with ChangeNotifier {
     }
   }
 
+  /// Sign in with Google OAuth
+  /// Creates user document in Firestore if first time
   Future<void> signInWithGoogle() async {
     _isLoading = true;
     notifyListeners();
